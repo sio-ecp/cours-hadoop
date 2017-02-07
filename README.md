@@ -10,4 +10,6 @@
 
 # divers
 
- - tutoriel [git/github](https://github.com/sio-ecp/cours-hadoop.git)
+ - tutoriel [git](https://git-scm.com/docs/gittutorial)
+ - tutoriel [github](https://guides.github.com/activities/hello-world/)
+ - [resumé] (https://www.git-tower.com/blog/git-cheat-sheet/) des commandes 
