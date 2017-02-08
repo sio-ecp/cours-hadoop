@@ -1,0 +1,13 @@
+Quelles sont les motivations derrières la création de YARN ?
+
+Dans Hadoop 1.0, il existe un couplage serré entre la gestion des ressources du cluster et le modèle de programmation MapReduce.
+Le Job Tracker, qui fait la gestion des ressources, fait partie de MapReduce Framework.
+Dans le framework MapReduce, le job MapReduce (application MapReduce) est divisé entre le nombre de tâches appelées mappeurs et réducteurs. Chaque tâche s'exécute sur l'une des machines (DataNode) du cluster, et chaque machine dispose d'un nombre limité de slots prédéfinis (slot Map, slot Reduce) pour exécuter des tâches simultanément.
+Le JobTracker est responsable de la gestion des ressources du cluster et de la conduite de l'exécution du travail MapReduce. Il réserve et planifie les emplacements pour toutes les tâches, configure, exécute et surveille chaque tâche, et si une tâche échoue, il alloue un nouveau slot et ré exécute la tâche. Une fois la tâche terminée, le JobTracker nettoie les ressources temporaires et libère l'emplacement de la tâche pour la rendre disponible pour d'autres tâches.
+Plusieurs problèmes ont été observés avec cette approche dans Hadoop 1.0 :
+-	Le JobTracker s'exécute sur une seule machine faisant plusieurs tâches comme la gestion des ressources, la planification des tâches et la surveillance. Bien qu'il y ait des machines (DataNode) disponibles, elles ne sont pas utilisées. Cela limite l'évolutivité.
+-	Le JobTracker est un SPOF. Cela signifie que si le JobTracker échoue, tous les travaux doivent redémarrer.
+-	Un problème avec l'utilisation des ressources : Dans Hadoop 1.0, il existe un concept de nombre prédéfini de slots Map et de slots Reduce pour chaque TaskTracker. Les problèmes d'utilisation des ressources se produisent parce que les emplacements Mapper peuvent être « pleins » alors que les emplacements de réduction sont vides (et vice-versa). Dans ce cas, les ressources de calcul (DataNode) peuvent rester inactives et réservées à des tâches de Reduce, même s'il existe un besoin immédiat pour que ces ressources soient utilisées comme des emplacements Mapper.
+-	Seules les applications qui supportent MapReduce peuvent s’exécuter sur Hadoop 1.0.
+YARN a pris en charge la gestion des clusters de MapReduce. MapReduce s’en voit simplifié pour effectuer le traitement de données uniquement.
+YARN dispose d'un composant central de gestion des ressources qui gère les ressources et alloue les ressources à l'application. Plusieurs applications peuvent s'exécuter sur Hadoop via YARN et toutes les applications peuvent partager une gestion commune des ressources.
