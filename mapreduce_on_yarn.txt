@@ -1,0 +1,48 @@
+### RUN A MAP REDUCE JOB ON YARN 
+### USING hadoop-2.7.3 AND CENTOS7 
+
+# If needed : follow this tutorial for Hadoop 2.7 single node installation and configuration on RHEL7/CentOS7
+# http://fibrevillage.com/storage/610-hadoop-2-7-single-node-installation-and-configuration-on-rhel7-centos7
+
+cd /usr/local/hadoop-2.7.3
+
+# Use jps (Java Virtual Machine Process Status Tool) to display the nodes
+jps
+
+# Start YARN
+sbin/start-yarn.sh
+
+# Display the nodes
+# Node manager must now appear
+jps
+
+# List of programs (example)
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar 
+
+# Run a MapReduce job using one a program 
+# Example : using pi with number of maps : 4 and damples per map : 4
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar pi 4 4
+
+# In a web browser, enter :   http://ip_addr:8088/cluster
+# Access port 8088 for information about cluster and all applications
+
+# Stop the daemons
+sbin/stop-yarn.sh
+
+
+### IF NEEDED : Solve the error “file not find exception” 
+
+# Amend JAVA_HOME variable
+# Note :  Use /JAVA_HOME to look for the variable
+# TO DO : remove the brackets after equal in both lines
+vi libexec/hadoop-config.sh
+
+# Stop the daemons
+sbin/stop-yarn.sh
+
+### RUN AGAIN A MAP REDUCE JOB
+# Restart the daemons
+sbin/start-yarn.sh
+
+# Run a MapReduce job
+bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.3.jar pi 4 4
